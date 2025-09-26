@@ -73,11 +73,7 @@ def MaxError(y, y_hat):
 
 # Part (c)
 def cross_validate_ridge(X, y, lambda_list, k, metric):
-    """
-    Performs k-fold CV over lambda_list using the given metric.
-    metric: one of "MAE", "MaxError", "RMSE"
-    Returns the lambda with best average score and a dictionary of mean scores.
-    """
+
     # Input validation
     if len(lambda_list) == 0:
         raise ValueError("lambda_list must not be empty")
@@ -113,13 +109,3 @@ def cross_validate_ridge(X, y, lambda_list, k, metric):
     best_index = min(range(len(mean_val_scores)), key=mean_val_scores.__getitem__) # sorts the scores w.r.t value, finds the minimum and returns the index
     return (lambda_list[best_index], mean_val_scores)
 
-
-
-
-
-# Remove the following line if you are not using it:
-if __name__ == "__main__":
-    # If you want to test your functions, write your code here.
-    # If you write it outside this snippet, the autograder will fail!
-    splits = cv_splitter(np.array([[1, 2], [3, 4], [5, 6], [7, 8]]), np.array([1, 2, 3, 4]), 2)
-    print(splits)

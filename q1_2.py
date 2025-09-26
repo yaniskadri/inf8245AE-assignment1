@@ -23,30 +23,20 @@ x_train_biais = data_matrix_bias(x_train)
 
 
 # 1 - Ordinary Least Squares Regression 
-
-    # Train
 ols_weigts = linear_regression_optimize(x_train_biais, y_train)
-    # Predict
 ols_predictions = predict(x_test_biais, ols_weigts)
-    # Evaluate
 ols_rmse = rmse(y_test, ols_predictions)
 
 # 2 - Ridge Regression for lambda = 1.0
-    # Train
 ridge_weights = ridge_regression_optimize(x_train_biais, y_train, 1.0)
-    # Predict
 ridge_predictions = predict(x_test_biais, ridge_weights)
-    # Evaluate
 ridge_rmse = rmse(y_test, ridge_predictions)
 
 # 3 - Weighted Ridge Regression for given lambda vector
-    # Train
 lambda_vec = np.array([0.1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3])
 
 weighted_ridge_weights = weighted_ridge_regression_optimize(x_train_biais, y_train, lambda_vec)
-    # Predict
 weighted_ridge_predictions = predict(x_test_biais, weighted_ridge_weights)
-    # Evaluate
 weighted_ridge_rmse = rmse(y_test, weighted_ridge_predictions)
 
 

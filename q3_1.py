@@ -21,9 +21,12 @@ def ridge_gradient(X: np.ndarray, y: np.ndarray, w: np.ndarray, lamb: float) -> 
 
 
     left = (-2 * (X.T @ (y - X @ w))) / n_samples
-    right = 2 * lamb * w
 
-    gradient = left + right
+    #Regularization 
+    reg = 2 * lamb * w
+    reg[0] = 0 # We don't regularize the biais term
+
+    gradient = left + reg
 
     return gradient
 
@@ -45,7 +48,6 @@ def learning_rate_exp_decay(eta0: float, t: int, k_decay: float) -> float:
     eta_t = eta0 * np.exp(-k_decay * t)
 
     return eta_t
-
 
 
 # Part (c)
@@ -76,6 +78,8 @@ def gradient_step(X: np.ndarray, y: np.ndarray, w: np.ndarray, lamb:float, eta: 
     # Assuming values are validated in gradient and learning rate calculations
 
     gradient = ridge_gradient(X, y, w, lamb)
+    
+    # We don't regularize the biais term
     w_step = w - eta * gradient
 
     return w_step
@@ -90,14 +94,16 @@ def gradient_descent_ridge(X, y, lamb=1.0, eta0=0.1, T=500, schedule="constant",
     if X.shape[0] == 0:
         raise ValueError("Input X must be non-empty")
     
+    # Add the biais column to X
+    #n_samples_without_biais = X.shape[0]
+    #X = np.hstack((np.ones((n_samples_without_biais, 1)), X))
+
     # Initialize weights with zeros (for convenience)
     n_features = X.shape[1]
     n_samples = X.shape[0]
     w = np.zeros(n_features)
-
-
-
     training_losses = []
+
     # Gradient descent loop
     for t in range(T):
         # Compute the right learning rate
@@ -118,21 +124,7 @@ def gradient_descent_ridge(X, y, lamb=1.0, eta0=0.1, T=500, schedule="constant",
         # Compute the loss 
         temp = y - X @ w
         temp = (temp @ temp) + lamb * (w @ w) # might cause bugs depending on shapes
-        temp = temp / (2/ n_samples)
+        temp = temp / (2 * n_samples)
         training_losses.append(temp)
 
     return (w, training_losses)
-
-
-
-
-
-
-
-
-# Remove the following line if you are not using it:
-if __name__ == "__main__":
-
-    # If you want to test your functions, write your code here.
-    # If you write it outside this snippet, the autograder will fail!
-    print("follow me on souncloud : https://soundcloud.com/foyya")
